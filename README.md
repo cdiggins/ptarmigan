@@ -1,8 +1,16 @@
 # Ptarmigan
 
-Ptarmigan is a framework for developing Windows desktop application. It does this by providing a solid software architecture with open-source implementations of common infrastructure features.
+Ptarmigan is a framework for developing Windows desktop applications. It does this by providing a solid software architecture with open-source implementations of common low-level infrastructure features.
 
-Ptarmigan provides a rich set of functionality out of the box and provides proper decoupling of the UI and data model. This means all features can run without UI, greatly simplifying testing and development. The Calliope UI is written using WPF, but porting to other UI frameworks is easy. 
+Ptarmigan provides a rich set of functionality out of the box and provides proper decoupling of the UI and data model. This means all features can run without UI, greatly simplifying testing and development. The Ptarmigan UI is written using WPF, but porting to other UI frameworks is easy. 
+
+# Background
+
+Many people, especially non-programmers, take for granted just how much functionality is expected and required to develop a successful commercial desktop application for Windows. There is a set of features that virtually every non-trivial commercial package ends up having to implement, and to be honest, it hasn't changed much in the last 20 years. Indeed there are many resources online and open-source libraries to help accelerate this process, and modern tools and languages are better than ever, but the the key to success is in anticipating all of the required functionality and putting it together in such a way that the features work together to speed up development, rather than slowing it down. 
+
+This isn't rocket science, but it does take a lot of practice to get it right. Luckily I have been doing this for over 25 years, and have worked with enough smart people to learn a few tricks along the wa.  
+
+So this is what the Ptarmigan project is about: capturing some of those patterns in one place and making them reusable building blocks, so that both you and I can more quickly get to the place we want to be: implementing the fun and useful featurs and workflows our customers need and want. 
 
 # How to use it
 
@@ -140,3 +148,10 @@ Software Architecture
 * Leverages Domain Driven Design best practices
 * Provides a centralized data management system inspired by Redux
 * Support for client-server and peer-to-peer networks 
+
+# Status: February 23, 2022 
+
+These features exist across many different projects. I expect by end of March to have a working prototype of the system for you to play with.
+
+In the mean-time I'd love to hear your suggestions and ideas for features to include at https://github.com/cdiggins/ptarmigan/issues.
+
