@@ -1,16 +1,12 @@
-# Calliope
+# Ptarmigan
 
-Calliope is a framework for Windows desktop application. It does this by providing a solid software architecture with built-in open-source implementations of common infrastructure features.
+Ptarmigan is a framework for developing Windows desktop application. It does this by providing a solid software architecture with open-source implementations of common infrastructure features.
 
-Calliope provides a rich set of functionality out of the box and provides proper decoupling of the UI and data model. This means all features can run without UI, greatly simplifying testing and development.  
-
-# Background 
-
-WPF and C# are very powerful tools for building desktop application. This starter kit aims to reduce development cost and effort, by providing a set of open-source implementation of common infrastructure tasks. 
+Ptarmigan provides a rich set of functionality out of the box and provides proper decoupling of the UI and data model. This means all features can run without UI, greatly simplifying testing and development. The Calliope UI is written using WPF, but porting to other UI frameworks is easy. 
 
 # How to use it
 
-The WPF starter kit includes a demo application that provides user facing functionality that demonstrates many of the implemented features focused primarily on debugging, profiling, instrumentation, and testing. 
+Ptarmigan comes with a demo application that provides user facing functionality that demonstrates many of the features implemented for the purpose of debugging, profiling, instrumentation, and testing. 
 
 You can take this application and build from it, or use the libraries as you want. 
 
