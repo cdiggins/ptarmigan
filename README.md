@@ -1,31 +1,50 @@
 # Ptarmigan
 
-Ptarmigan is a framework for developing Windows desktop applications. It does this by providing a solid software architecture with open-source implementations of common low-level infrastructure features.
+Ptarmigan is a framework for developing Windows well-structured and robust desktop applications. It does 
+this by providing a solid software architecture with open-source implementations of common 
+low-level infrastructure features.
 
-Ptarmigan provides a rich set of functionality out of the box and provides proper decoupling of the UI and data model. This means all features can run without UI, greatly simplifying testing and development. The Ptarmigan UI is written using WPF, but porting to other UI frameworks is easy. 
+Ptarmigan provides a rich set of functionality out of the box and provides proper decoupling of 
+the UI and data model. This means all features can run without UI, greatly simplifying testing and 
+development. 
 
 # Background
 
-Many people, especially non-programmers, take for granted just how much functionality is expected and required to develop a successful commercial desktop application for Windows. There is a set of features that virtually every non-trivial commercial package ends up having to implement, and to be honest, it hasn't changed much in the last 20 years. Indeed there are many resources online and open-source libraries to help accelerate this process, and modern tools and languages are better than ever, but the the key to success is in anticipating all of the required functionality and putting it together in such a way that the features work together to speed up development, rather than slowing it down. 
+Many people, especially non-programmers, take for granted just how much functionality is expected and 
+required to develop a successful commercial desktop application for Windows. There is a set of features 
+that virtually every non-trivial commercial package ends up having to implement, and to be honest, 
+it hasn't changed much in the last 25 years. Indeed there are many resources online and open-source 
+libraries to help accelerate this process, and modern tools and languages are better than ever. 
 
-This isn't rocket science, but it does take a lot of practice to get it right. Luckily I have been doing this for over 25 years, and have worked with enough smart people to learn a few tricks along the wa.  
+The key to success in software development is anticipating all of the required functionality and putting 
+it together in such a way that the features work together to speed up development, rather than slowing it down. 
 
-So this is what the Ptarmigan project is about: capturing some of those patterns in one place and making them reusable building blocks, so that both you and I can more quickly get to the place we want to be: implementing the fun and useful featurs and workflows our customers need and want. 
+There are no great insights or secrets, but it does take a lot of practice to get it right. Luckily there are 
+enough people that have been doing for a long time, that a number of architectural and coding patterns 
+have been identified that can make application development much faster. 
+
+This project is about capturing some of those patterns in one place and making them reusable building 
+blocks, so that both you and I can more quickly get to the place we want to be: implementing the fun and 
+useful featurs and workflows our customers need and want. 
 
 # How to use it
 
-Ptarmigan comes with a demo application that provides user facing functionality that demonstrates many of the features implemented for the purpose of debugging, profiling, instrumentation, and testing. 
+Ptarmigan comes with a demo application that provides user facing functionality that demonstrates many of the 
+features implemented for the purpose of debugging, profiling, instrumentation, and testing. 
 
 You can take this application and build from it, or use the libraries as you want. 
 
-# Do you require more documentation, training, support, custom features, integration, or access to the road-map? 
+# Do you require more ... 
+## ... documentation, training, support, custom features, integration, or access to the road-map? 
 
 We provide very affordable packages for users who want commercial grade support. 
 Reach out to me at cdiggins@gmail.com to discuss the details. 
 
 # Why open-source
 
-This will be a better product because everyone can validate the source code and suggest improvements. It a is commercially friendly (MIT License) so you can use this code and libraries in your application with no attribution. You just can't change the license of the source code. 
+This will be a better product because everyone can validate the source code and suggest improvements. 
+It is released under a commercially friendly (MIT License) so you can use this code and libraries in your 
+application with no requirement of attribution. 
 
 # Features under Development
 
