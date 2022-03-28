@@ -34,8 +34,7 @@ features implemented for the purpose of debugging, profiling, instrumentation, a
 
 You can take this application and build from it, or use the libraries as you want. 
 
-# Do you require more ... 
-## ... documentation, training, support, custom features, integration, or access to the road-map? 
+## Do you require additional documentation, training, support, custom features, integration, or access to the road-map? 
 
 We provide very affordable packages for users who want commercial grade support. 
 Reach out to me at cdiggins@gmail.com to discuss the details. 
