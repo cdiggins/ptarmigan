@@ -6,7 +6,19 @@
         xmlns:local="clr-namespace:Ptarmigan.WpfApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <DockPanel>
+        <StackPanel>
+            <Menu>
+                <MenuItem Click="MenuItem_OnClick">
+                    <MenuItem.Header>Show Console</MenuItem.Header>
+                </MenuItem>
+            </Menu>
+            <TabControl x:Name="TabControl">
+                <TabItem>
+                    <TabItem.Header>Fubar</TabItem.Header>
+                    <WebBrowser></WebBrowser>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </DockPanel>
 </Window>

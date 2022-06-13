@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading;
 
 namespace Ptarmigan.Services
 {
-    public class Class1
+    public static class Services
     {
-
+        public static void ShowConsole()
+            => throw new NotImplementedException();
     }
 }

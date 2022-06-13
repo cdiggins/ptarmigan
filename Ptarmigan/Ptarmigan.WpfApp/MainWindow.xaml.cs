@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Ptarmigan.Utils;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,12 @@ namespace Ptarmigan.WpfApp
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            ConsoleManager.Show();
+            Console.WriteLine("Hello");
         }
     }
 }

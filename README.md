@@ -39,12 +39,6 @@ You can take this application and build from it, or use the libraries as you wan
 We provide very affordable packages for users who want commercial grade support. 
 Reach out to me at cdiggins@gmail.com to discuss the details. 
 
-# Why open-source
-
-This will be a better product because everyone can validate the source code and suggest improvements. 
-It is released under a commercially friendly (MIT License) so you can use this code and libraries in your 
-application with no requirement of attribution. 
-
 # Features under Development
 
 UI
