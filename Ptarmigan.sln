@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ptarmigan.Utils", "src\Ptarmigan.Utils\Ptarmigan.Utils.csproj", "{8BB90FDA-AAA8-4139-8AFE-E278015C5F55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domo.Tests", "..\domo\Domo.Tests\Domo.Tests.csproj", "{78F95319-D99E-4A24-A375-CD5E763A55E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domo", "..\domo\Domo\Domo.csproj", "{9FD12123-2244-4F81-ABC2-BDC7E2E516F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domo.Sample.Services", "..\domo\Domo.Sample.Services\Domo.Sample.Services.csproj", "{1353C1AE-FA2D-4A76-94A1-3F67E14F416B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domo.Sample.WpfApp", "..\domo\Domo.Sample.WpfApp\Domo.Sample.WpfApp.csproj", "{4131DDCF-0D23-44E3-A94A-83BD30C87905}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domo.SampleModels", "..\domo\Domo.SampleModels\Domo.SampleModels.csproj", "{6CF6226D-6FFA-47F0-8155-3E1D359808D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatoUtils", "..\platosoft\utilities\CSharpUtils\PlatoUtils.csproj", "{08143133-7AF2-4AAA-80B0-D1ADB0E806E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsUtils", "..\platosoft\utilities\WindowsUtils\WindowsUtils.csproj", "{80E6F5ED-ADE4-44E5-A834-749C91D21335}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{E648EC64-6448-4F50-B304-4929FACC0B1A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		notes.txt = notes.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ptarmigan.Services", "src\Ptarmigan.Services\Ptarmigan.Services.csproj", "{E2178030-7508-4FFA-858B-8D66E086A3C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ptarmigan.Utils.Roslyn", "src\Ptarmigan.Utils.Roslyn\Ptarmigan.Utils.Roslyn.csproj", "{47987233-6145-4238-85B7-CC19A3A3C256}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BB90FDA-AAA8-4139-8AFE-E278015C5F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB90FDA-AAA8-4139-8AFE-E278015C5F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB90FDA-AAA8-4139-8AFE-E278015C5F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB90FDA-AAA8-4139-8AFE-E278015C5F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78F95319-D99E-4A24-A375-CD5E763A55E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F95319-D99E-4A24-A375-CD5E763A55E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F95319-D99E-4A24-A375-CD5E763A55E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F95319-D99E-4A24-A375-CD5E763A55E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD12123-2244-4F81-ABC2-BDC7E2E516F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD12123-2244-4F81-ABC2-BDC7E2E516F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD12123-2244-4F81-ABC2-BDC7E2E516F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD12123-2244-4F81-ABC2-BDC7E2E516F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1353C1AE-FA2D-4A76-94A1-3F67E14F416B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1353C1AE-FA2D-4A76-94A1-3F67E14F416B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1353C1AE-FA2D-4A76-94A1-3F67E14F416B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1353C1AE-FA2D-4A76-94A1-3F67E14F416B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4131DDCF-0D23-44E3-A94A-83BD30C87905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4131DDCF-0D23-44E3-A94A-83BD30C87905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4131DDCF-0D23-44E3-A94A-83BD30C87905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4131DDCF-0D23-44E3-A94A-83BD30C87905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CF6226D-6FFA-47F0-8155-3E1D359808D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CF6226D-6FFA-47F0-8155-3E1D359808D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CF6226D-6FFA-47F0-8155-3E1D359808D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CF6226D-6FFA-47F0-8155-3E1D359808D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08143133-7AF2-4AAA-80B0-D1ADB0E806E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08143133-7AF2-4AAA-80B0-D1ADB0E806E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08143133-7AF2-4AAA-80B0-D1ADB0E806E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08143133-7AF2-4AAA-80B0-D1ADB0E806E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80E6F5ED-ADE4-44E5-A834-749C91D21335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80E6F5ED-ADE4-44E5-A834-749C91D21335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80E6F5ED-ADE4-44E5-A834-749C91D21335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80E6F5ED-ADE4-44E5-A834-749C91D21335}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2178030-7508-4FFA-858B-8D66E086A3C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2178030-7508-4FFA-858B-8D66E086A3C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2178030-7508-4FFA-858B-8D66E086A3C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2178030-7508-4FFA-858B-8D66E086A3C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47987233-6145-4238-85B7-CC19A3A3C256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47987233-6145-4238-85B7-CC19A3A3C256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47987233-6145-4238-85B7-CC19A3A3C256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47987233-6145-4238-85B7-CC19A3A3C256}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8247326-24C0-4847-8005-A51E2C21CD6F}
+	EndGlobalSection
+EndGlobal
