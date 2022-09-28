@@ -540,5 +540,11 @@ namespace Ptarmigan.Utils
         /// </summary>
         public static BinaryReader CreateBinaryReader(string filePath)
             => new BinaryReader(File.OpenRead(filePath));
+
+        /// <summary>
+        /// Creates an empty file 
+        /// </summary>
+        public static void CreateEmptyFile(string filePath)
+            => File.CreateText(filePath).Close();
     }
 }

@@ -9,7 +9,7 @@ using Domo;
 
 namespace Ptarmigan.Services
 {
-    public class PluginService
+    public class PluginService : BaseService
     {
         public class Options
         {
@@ -29,6 +29,7 @@ namespace Ptarmigan.Services
         public string Name => nameof(PluginService);
 
         public PluginService(IApi api, Options options, CompilerRepo repo, ILogger logger)
+            : base(api)
         {
             Api = api;
             CompilerRepo = repo;
@@ -61,7 +62,7 @@ namespace Ptarmigan.Services
         public static void InitializePlugin(IApi api, IPlugin plugin)
         {
             plugin.Initialize(api);
-            api.EventBus.AddSubscriberUsingReflection(plugin, plugin);
+            api.EventBus.AddSubscriberUsingReflection(plugin);
         }
 
         private void Controller_RecompileEvent(object sender, EventArgs e)

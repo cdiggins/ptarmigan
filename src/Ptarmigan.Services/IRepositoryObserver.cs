@@ -6,7 +6,7 @@ using Ptarmigan.Utils;
 namespace Ptarmigan.Services
 {
 
-    public class RepositoryChangedEvent
+    public class RepositoryChangedEvent : IEvent
     {
         public RepositoryChangedEvent(RepositoryChangeArgs args)
             => Args = args;

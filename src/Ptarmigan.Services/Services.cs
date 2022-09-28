@@ -139,6 +139,5 @@ namespace Ptarmigan.Services
 
         public void ProcessException(Exception e)
             => throw new ArgumentException();
-
     }
 }

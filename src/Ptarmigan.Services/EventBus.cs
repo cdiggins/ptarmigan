@@ -6,6 +6,13 @@ using Ptarmigan.Utils;
 namespace Ptarmigan.Services
 {
     /// <summary>
+    /// Event types should derive from this class. An event is a data packet
+    /// broadcast for anyone listening.  
+    /// </summary>
+    public interface IEvent
+    { }
+
+    /// <summary>
     /// Listeners are notified when an event they have subscribed to has been sent.
     /// Filtering of events is done by the bus, only subscribed events are ever sent.
     /// Listeners inform when they are being disposed, so that they can be detached.  
@@ -17,16 +24,16 @@ namespace Ptarmigan.Services
 
     /// <summary>
     /// Used to subscribe to, and publish events between services.
-    /// Events must have distinct type full-names.
+    /// Events must have distinct type names.
     /// This decouples event publishers from subscribers.
     /// If a publisher is disposed, events are simply no longer published.
     /// If a subscriber is disposed, it is automatically unsubscribed. 
     /// </summary>
     public interface IEventBus
     {
-        void Publish<T>(T evt);
-        void Unsubscribe<T>(ISubscriber<T> subscriber);
-        void Subscribe<T>(ISubscriber<T> subscriber);
+        void Publish<T>(T evt) where T : IEvent;
+        void Unsubscribe<T>(ISubscriber<T> subscriber) where T : IEvent;
+        void Subscribe<T>(ISubscriber<T> subscriber) where T : IEvent;
     }
 
     /// <summary>
@@ -54,7 +61,7 @@ namespace Ptarmigan.Services
     {
         public ConcurrentDictionary<Type, ConcurrentSet<object>> Subscribers = new ConcurrentDictionary<Type, ConcurrentSet<object>>();
         
-        public void Publish<T>(T evt)
+        public void Publish<T>(T evt) where T: IEvent
         {
             if (!Subscribers.TryGetValue(typeof(T), out var subscribers)) 
                 return;
@@ -62,14 +69,14 @@ namespace Ptarmigan.Services
                 s.OnEvent(evt);
         }
 
-        public void Subscribe<T>(ISubscriber<T> subscriber)
+        public void Subscribe<T>(ISubscriber<T> subscriber) where T : IEvent
         {
             subscriber.Disposing += (_sender, _args) => Unsubscribe(subscriber);
             var subscribers = Subscribers.GetOrAdd(typeof(T), _ => new ConcurrentSet<object>());
             subscribers.Add(subscriber);
         }
 
-        public void Unsubscribe<T>(ISubscriber<T> subscriber)
+        public void Unsubscribe<T>(ISubscriber<T> subscriber) where T : IEvent
         {
             if (!Subscribers.TryGetValue(typeof(T), out var subscribers))
                 return;

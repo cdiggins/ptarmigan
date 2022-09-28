@@ -31,7 +31,7 @@ namespace Ptarmigan.Services
             }
         }
 
-        public static void Subscribe<T>(this IEventBus bus, Action<T> action, IDisposingNotifier notifier = null)
+        public static void Subscribe<T>(this IEventBus bus, Action<T> action, IDisposingNotifier notifier = null) where T: IEvent
             => bus.Subscribe(new Subscriber<T>(action, notifier));
 
         public static void OnModelChanged<T>(this IEventBus bus, Action<IModel<T>> action,
@@ -46,8 +46,7 @@ namespace Ptarmigan.Services
         /// Given a dynamic object, which potentially implements many ISubscriber interfaces,
         /// connect up to it, and inform it when the object happens first.  
         /// </summary>
-        public static void AddSubscriberUsingReflection(this IEventBus bus, object subscriber,
-            IDisposingNotifier notifier)
+        public static void AddSubscriberUsingReflection(this IEventBus bus, object subscriber)
         {
             foreach (var iface in subscriber.GetType().GetInterfaces())
             {
@@ -61,7 +60,7 @@ namespace Ptarmigan.Services
                 if (constructedSubscribeMethod == null)
                     throw new Exception("Internal error: could not find or construct subscriber method");
 
-                constructedSubscribeMethod.Invoke(bus, new[] { subscriber, notifier });
+                constructedSubscribeMethod.Invoke(bus, new[] { subscriber });
             }
         }
     }

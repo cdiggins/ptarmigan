@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Domo;
 
 namespace Ptarmigan.Services
 {
-    public interface IApi : IServiceProvider
+    public interface IApi
     {
-        T AddService<T>(T service) where T : class;
-        IEnumerable<object> GetServices();
-        TService GetService<TService>();
+        IEnumerable<IService> GetServices();
+        IEnumerable<IRepository> GetRepositories();
+        void AddService<T>(T service) where T : IService;
+        void AddRepository<T>(T repository) where T : IRepository;
         IEventBus EventBus { get; }
     }
 }

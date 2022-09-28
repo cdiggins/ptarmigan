@@ -4,6 +4,7 @@ using Ptarmigan.Utils;
 
 namespace Ptarmigan.Services
 {
+    /*
     public class NamedCommand : INamedCommand
     {
         public NamedCommand(Delegate execute, Delegate canExecute = null, IRepository repository = null)
@@ -41,4 +42,5 @@ namespace Ptarmigan.Services
         public event EventHandler CanExecuteChanged;
         public string Name { get; }
     }
+    */
 }

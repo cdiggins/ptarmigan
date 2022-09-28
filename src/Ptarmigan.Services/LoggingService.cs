@@ -20,12 +20,13 @@ namespace Ptarmigan.Services
     {
     }
 
-    public class LoggingService : ILogger
+    public class LoggingService : BaseService, ILogger
     {
         public LogRepo Repo { get; set; }
         public Stopwatch Stopwatch { get; } = Stopwatch.StartNew();
 
-        public LoggingService(LogRepo repo)
+        public LoggingService(IApi api, LogRepo repo)
+            : base(api)
             => Repo = repo;
 
         public ILogger Log(int category, string message = "", params object[] args)

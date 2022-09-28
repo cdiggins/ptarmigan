@@ -81,7 +81,6 @@ namespace Ptarmigan.Utils
         public static string Quote(this string s, string beginQuote = "\"", string endQuote = null)
             => $"{beginQuote}{s}{endQuote ?? beginQuote}";
 
-
         public static string ToIdentifier(this string self)
             => string.IsNullOrEmpty(self) ? "_" : self.ReplaceNonAlphaNumeric("_");
 
@@ -89,6 +88,26 @@ namespace Ptarmigan.Utils
             => Regex.Replace(self, "[^a-zA-Z0-9]", replace);
 
         public static string ToBitConverterLowerInvariant(this byte[] bytes)
-            => BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();    
+            => BitConverter.ToString(bytes).Replace("-", string.Empty).ToLowerInvariant();
+
+        public static string LetterUpperCharsString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public static string DigitCharsString = "0123456789";
+        public static char[] LetterUpperChars = LetterUpperCharsString.ToCharArray();
+        public static char[] LetterLowerChars = LetterUpperCharsString.ToLowerInvariant().ToCharArray();
+        public static char[] DigitChars = DigitCharsString.ToCharArray();
+        public static char[] LetterChars = LetterUpperChars.Concat(LetterLowerChars).ToArray();
+        public static char[] DigitOrLetterChars = DigitChars.Concat(LetterChars).ToArray();
+        public static Random Random = new Random();
+
+        public static string CreateRandomIdentifier(int length)
+        {
+            var c = new char[length];
+            for (var i = 0; i < length; ++i)
+                c[i] = DigitOrLetterChars[Random.Next(DigitOrLetterChars.Length)];
+            return new string(c);
+        }
+
+        public static string RemoveChars(this string text, string chars)
+            => text.Where(c => !chars.Contains(c)).Aggregate(new StringBuilder(), (sb, c) => sb.Append(c)).ToString();
     }
 }
