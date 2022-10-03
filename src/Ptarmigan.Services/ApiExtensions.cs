@@ -9,6 +9,6 @@ namespace Ptarmigan.Services
             => api.GetServices().OfType<TService>().FirstOrDefault();
 
         public static TRepo GetRepo<TRepo>(this IApi api) where TRepo: IRepository
-            => api.GetServices().OfType<TRepo>().FirstOrDefault();
+            => api.GetRepositories().OfType<TRepo>().FirstOrDefault();
     }
 }

@@ -20,11 +20,6 @@ namespace Ptarmigan.Services
             => Repositories.Add(repository);
     }
 
-    public interface IAggregateRepositoryObserver<T> : IRepositoryObserver<T>
-    {
-        void OnModelsChanged(IEnumerable<T> models, RepositoryChangeArgs args);
-    }
-
     public static class RepositoryManagerExtensions
     {
         public static ISingletonRepository<T> GetSingletonRepository<T>(this IRepositoryManager manager)

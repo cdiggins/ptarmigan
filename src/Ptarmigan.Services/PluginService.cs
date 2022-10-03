@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Ptarmigan.Utils;
@@ -9,6 +10,19 @@ using Domo;
 
 namespace Ptarmigan.Services
 {
+    public struct PluginRecord
+    {
+        public string Name { get; }
+        public bool Initialized { get; }
+        public string Error { get; }
+
+        public PluginRecord(string name, bool initialized = true, string error = null)
+            => (Name, Initialized, Error) = (name, initialized, error);
+    }
+
+    public class PluginRepo : AggregateRepository<PluginRecord>
+    { }
+
     public class PluginService : BaseService
     {
         public class Options
@@ -25,14 +39,16 @@ namespace Ptarmigan.Services
         public List<IPlugin> ScriptedPlugins { get; set; } = new List<IPlugin>();
         public CompilerService CompilerService { get; }
         public CompilerRepo CompilerRepo { get; }
+        public PluginRepo PluginRepo { get; }
         public ILogger Logger { get; }
         public string Name => nameof(PluginService);
 
-        public PluginService(IApi api, Options options, CompilerRepo repo, ILogger logger)
+        public PluginService(IApi api, Options options, CompilerRepo compilerRepo, PluginRepo pluginRepo, ILogger logger)
             : base(api)
         {
             Api = api;
-            CompilerRepo = repo;
+            CompilerRepo = compilerRepo;
+            PluginRepo = pluginRepo;
             Logger = logger;
 
             if (!string.IsNullOrWhiteSpace(options.ScriptsDirectory))
@@ -55,14 +71,30 @@ namespace Ptarmigan.Services
 
             foreach (var plugin in LoadedPlugins)
             {
-                plugin.Initialize(Api);
+                InitializePlugin(plugin);
             }
         }
 
-        public static void InitializePlugin(IApi api, IPlugin plugin)
+        public bool InitializePlugin(IPlugin plugin)
         {
-            plugin.Initialize(api);
-            api.EventBus.AddSubscriberUsingReflection(plugin);
+            try
+            {
+                plugin.Initialize(Api);
+                if (plugin.Api != Api)
+                    throw new Exception("Plugin does not return the API: probably forgot to call base.Initialize");
+                Api.EventBus.AddSubscriberUsingReflection(plugin);
+                var id = Guid.NewGuid();
+                PluginRepo.Add(id, new PluginRecord(plugin.Name));
+                plugin.Disposing += (_sender, _args) => PluginRepo.Delete(id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                var id = Guid.NewGuid();
+                PluginRepo.Add(id, new PluginRecord(plugin.Name, false, e.Message));
+                return false;
+            }
         }
 
         private void Controller_RecompileEvent(object sender, EventArgs e)
@@ -92,17 +124,8 @@ namespace Ptarmigan.Services
                 {
                     foreach (var p in plugins.ToArray())
                     {
-                        try
-                        {
-                            InitializePlugin(Api, p);
-
-                            // TODO: for each repository it watches, set it up as a published 
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError($"Failed to initialize plugin {p.Name}", ex);
+                        if (!InitializePlugin(p))
                             plugins.Remove(p);
-                        }
                     }
 
                     ScriptedPlugins.AddRange(plugins);

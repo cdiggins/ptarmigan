@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Sockets;
 
 namespace Ptarmigan.Utils
 {

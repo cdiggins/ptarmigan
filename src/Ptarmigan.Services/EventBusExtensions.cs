@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domo;
 using Ptarmigan.Utils;
 
@@ -19,16 +20,7 @@ namespace Ptarmigan.Services
         // ReSharper disable once UnusedMember.Global
         public static void AddTypedRepositoryAsPublisher<T>(this IEventBus bus, IRepository<T> repo)
         {
-            if (repo.IsSingleton)
-            {
-                repo.RepositoryChanged += (_, args)
-                    => bus.Publish(new ModelChangedEvent<T>(args));
-            }
-            else
-            {
-                repo.RepositoryChanged += (_, args)
-                    => bus.Publish(new ModelsChangedEvent<T>(args));
-            }
+            repo.RepositoryChanged += (_, args) => bus.Publish(new ModelChangedEvent<T>(args));
         }
 
         public static void Subscribe<T>(this IEventBus bus, Action<T> action, IDisposingNotifier notifier = null) where T: IEvent
@@ -40,7 +32,7 @@ namespace Ptarmigan.Services
 
         public static void OnModelsChanged<T>(this IEventBus bus, Action<IReadOnlyList<IModel<T>>> action,
             IDisposingNotifier notifier = null)
-            => bus.Subscribe<ModelsChangedEvent<T>>(evt => action(evt.Models), notifier);
+            => bus.Subscribe<ModelChangedEvent<T>>(evt => action(evt.Models), notifier);
 
         /// <summary>
         /// Given a dynamic object, which potentially implements many ISubscriber interfaces,

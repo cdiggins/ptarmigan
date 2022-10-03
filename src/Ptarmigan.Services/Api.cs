@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Domo;
+using Ptarmigan.Utils;
 
 namespace Ptarmigan.Services
 {
@@ -43,6 +44,12 @@ namespace Ptarmigan.Services
             _repositories.Add(repository);
             EventBus.AddRepositoryAsPublisher(repository);
             EventBus.Publish(new RepositoryRegisteredEvent<T>(repository));
+        }
+
+        public ILogger Log(int category, string message, params object[] args)
+        {
+            this.GetService<LoggingService>()?.Log(category, message, args);
+            return this;
         }
     }
 }

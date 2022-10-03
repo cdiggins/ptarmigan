@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Domo;
+using Ptarmigan.Utils;
 
 namespace Ptarmigan.Services
 {
-    public interface IApi
+    public interface IApi : ILogger
     {
         IEnumerable<IService> GetServices();
         IEnumerable<IRepository> GetRepositories();

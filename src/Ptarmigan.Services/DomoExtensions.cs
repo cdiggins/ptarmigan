@@ -16,9 +16,9 @@ namespace Ptarmigan.Services
             => repo.GetModels().Select(m => m.Value);
 
         public static JsonText ToJson(this IRepository repo)
-            => JsonConvert.SerializeObject(repo.GetValues().ToArray());
+            => JsonConvert.SerializeObject(repo.GetValues().ToArray(), Formatting.Indented);
 
-        public static T FromJson<T>(this T repo, JsonText content) where T: IRepository
+        public static T LoadFromJson<T>(this T repo, JsonText content) where T: IRepository
         {
             var type = repo.ValueType.MakeArrayType();
             var tmp = (Array)JsonConvert.DeserializeObject(content, type);

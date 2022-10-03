@@ -6,5 +6,6 @@ namespace Ptarmigan.Services
     {
         string Name { get; }
         void Initialize(IApi api);
+        IApi Api { get; }
     }
 }
