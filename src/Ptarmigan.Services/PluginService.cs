@@ -38,15 +38,17 @@ namespace Ptarmigan.Services
         public List<IPlugin> LoadedPlugins { get; set; } = new List<IPlugin>();
         public List<IPlugin> ScriptedPlugins { get; set; } = new List<IPlugin>();
         public CompilerService CompilerService { get; }
+        public CommandService CommandService { get; }
         public CompilerRepo CompilerRepo { get; }
         public PluginRepo PluginRepo { get; }
         public ILogger Logger { get; }
         public string Name => nameof(PluginService);
 
-        public PluginService(IApi api, Options options, CompilerRepo compilerRepo, PluginRepo pluginRepo, ILogger logger)
+        public PluginService(IApi api, Options options, CommandService commandService, CompilerRepo compilerRepo, PluginRepo pluginRepo, ILogger logger)
             : base(api)
         {
             Api = api;
+            CommandService = commandService;
             CompilerRepo = compilerRepo;
             PluginRepo = pluginRepo;
             Logger = logger;
@@ -85,6 +87,7 @@ namespace Ptarmigan.Services
                 Api.EventBus.AddSubscriberUsingReflection(plugin);
                 var id = Guid.NewGuid();
                 PluginRepo.Add(id, new PluginRecord(plugin.Name));
+                CommandService.AddAttributeCommands(plugin); 
                 plugin.Disposing += (_sender, _args) => PluginRepo.Delete(id);
                 return true;
             }

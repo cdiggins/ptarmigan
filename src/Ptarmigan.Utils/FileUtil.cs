@@ -8,7 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace Ptarmigan.Utils
 {
-
+    /// <summary>
+    /// Todo: we need to replace strings with FilePath and DirectoryPath
+    /// </summary>
     public static class FileUtil
     {
         public static FileVersionInfo ToFileVersion(this string filePath)
@@ -546,5 +548,18 @@ namespace Ptarmigan.Utils
         /// </summary>
         public static void CreateEmptyFile(string filePath)
             => File.CreateText(filePath).Close();
+
+        /// <summary>
+        /// Gets the directory that contains the file path.
+        /// </summary>
+        public static DirectoryPath GetDirectory(this FilePath filePath)
+            => Path.GetDirectoryName(filePath);
+
+        public static IEnumerable<FilePath> GetFiles(this DirectoryPath directoryPath, string searchPattern,
+            bool recurse = false)
+            => Directory.EnumerateFiles(directoryPath, searchPattern,
+                recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Select(f => (FilePath)f);
+
+
     }
 }

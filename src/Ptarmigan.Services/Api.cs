@@ -36,6 +36,8 @@ namespace Ptarmigan.Services
         public void AddService<T>(T service) where T: IService
         {
             _services.Add(service);
+            // TODO: register commands 
+            // TODO: add as subscriber ... if necessary 
             EventBus.Publish(new ServiceRegisteredEvent<T>(service));
         }
 

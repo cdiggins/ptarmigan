@@ -130,6 +130,22 @@ namespace Ptarmigan.Utils
             => self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .ToDictionary(fi => fi.Name, fi => fi.GetValue(self));
 
+        /// <summary>
+        /// Given a method info, an object to invoke it on, and args, returns a func object (lambda)
+        /// </summary>
+        public static Func<T> InvokableMethod<T>(this MethodInfo mi, object self, params object[] args)
+            => () => (T)mi.Invoke(self, args);
 
+        /// <summary>
+        /// Given a property info, an object to invoke it on, returns a func object (lambda)
+        /// </summary>
+        public static Func<T> InvokableProperty<T>(this PropertyInfo pi, object self)
+            => () => (T)pi.GetValue(self);
+
+        /// <summary>
+        /// Given a method info, an object to invoke it on, and args, returns an action object (lambda)
+        /// </summary>
+        public static Action InvokableMethod(this MethodInfo mi, object self, params object[] args)
+            => () => mi.Invoke(self, args);
     }
 }
