@@ -129,11 +129,60 @@ namespace Ptarmigan.Utils.Roslyn
             return model.GetOperation(node).Descendants().OfType<IMemberReferenceOperation>();
         }
 
-        public static bool IsPublicMember(this ISymbol symbol)
-            => symbol.DeclaringSyntaxReferences.Any(dsr => dsr.GetSyntax().IsPublicMember());
+        public static FieldDeclarationSyntax GetSyntax(this IFieldSymbol fieldSymbol)
+            => fieldSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax().Parent?.Parent as FieldDeclarationSyntax;
+
+        public static PropertyDeclarationSyntax GetSyntax(this IPropertySymbol propertySymbol)
+            => propertySymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax().Parent?.Parent as PropertyDeclarationSyntax;
+
+        public static MethodDeclarationSyntax GetSyntax(this IMethodSymbol methodSymbol)
+            => methodSymbol.DeclaringSyntaxReferences.FirstOrDefault().GetSyntax() as MethodDeclarationSyntax;
 
         public static bool IsPublicMember(this SyntaxNode node)
             => node is MemberDeclarationSyntax mds
                && mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword);
+
+        // https://stackoverflow.com/questions/30300753/how-to-detect-closures-in-code-with-roslyn
+        public static IEnumerable<ISymbol> GetCapturedVariables(this SemanticModel model, AnonymousFunctionExpressionSyntax lambda)
+            => model.AnalyzeDataFlow(lambda)?.Captured ?? Enumerable.Empty<ISymbol>();
+
+        public static IEnumerable<AnonymousFunctionExpressionSyntax> GetLambdas(this SyntaxNode root)
+            => root.DescendantNodesAndSelf().OfType<AnonymousFunctionExpressionSyntax>();
+
+        // https://www.meziantou.net/checking-if-a-property-is-an-auto-implemented-property-in-roslyn.htm
+        public static bool IsAutoProperty(this IPropertySymbol propertySymbol)
+        {
+            // Get fields declared in the same type as the property
+            var fields = propertySymbol.ContainingType.GetMembers().OfType<IFieldSymbol>();
+
+            // Check if one field is associated to
+            return fields.Any(field => SymbolEqualityComparer.Default.Equals(field.AssociatedSymbol, propertySymbol));
+        }
+
+        public static ITypeSymbol GetTypeSymbol(this SemanticModel model, ISymbol symbol)
+        {
+            if (symbol is IParameterSymbol ps)
+                return ps.Type;
+            if (symbol is IFieldSymbol fs)
+                return fs.Type;
+            if (symbol is ILocalSymbol ls)
+                return ls.Type;
+            if (symbol is IPropertySymbol prop)
+                return prop.Type;
+            var syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
+            var node = syntaxReference.GetSyntax();
+            return model.GetTypeInfo(node).Type;
+        }
+
+        public static IEnumerable<SyntaxNode> GetAllNodes(this Compilation compilation)
+            => compilation.SyntaxTrees.SelectMany(st => st.GetRoot().DescendantNodesAndSelf());
+
+        public static IEnumerable<(SemanticModel, SyntaxTree)> GetModelsAndTrees(this Compilation compilation)
+        {
+            for (var i = 0; i < compilation.SyntaxTrees.Count; i++)
+            {
+                yield return (compilation.SemanticModels[i], compilation.SyntaxTrees[i]);
+            }
+        }
     }
 }
