@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -183,6 +182,64 @@ namespace Ptarmigan.Utils.Roslyn
             {
                 yield return (compilation.SemanticModels[i], compilation.SyntaxTrees[i]);
             }
+        }
+
+        public static SyntaxNode GetAssociatedStatementOrExpression(this SyntaxNode node)
+        {
+            if (node is StatementSyntax)
+                return node;
+            
+            if (node is ExpressionSyntax)
+                return node;
+            
+            if (node is ArrowExpressionClauseSyntax aecs)
+                return aecs.Expression;
+
+            if (node is PropertyDeclarationSyntax pds)
+            {
+                if (pds.ExpressionBody != null)
+                    return pds.ExpressionBody.GetAssociatedStatementOrExpression();
+            }
+
+            if (node is BaseMethodDeclarationSyntax mds)
+            {
+                if (mds.Body != null)
+                    return mds.Body;
+                if (mds.ExpressionBody != null)
+                    return mds.ExpressionBody.GetAssociatedStatementOrExpression();
+            }
+
+            return null;
+        }
+
+        public static DataFlowAnalysis GetDataFlowAnalysis(this SemanticModel model, SyntaxNode node)
+        {
+            if (node is ConstructorInitializerSyntax cis)
+                return model.AnalyzeDataFlow(cis);
+            if (node is StatementSyntax ss)
+                return model.AnalyzeDataFlow(ss);
+            if (node is ExpressionSyntax es)
+                return model.AnalyzeDataFlow(es);
+            if (node is PrimaryConstructorBaseTypeSyntax pcsbts)
+                return model.AnalyzeDataFlow(pcsbts);
+
+            if (node is ArrowExpressionClauseSyntax expression)
+                return model.GetDataFlowAnalysis(expression.Expression);
+
+            if (node is BaseMethodDeclarationSyntax mds)
+            {
+                if (mds.Body != null)
+                    return model.GetDataFlowAnalysis(mds.Body);
+                if (mds.ExpressionBody != null)
+                    return model.GetDataFlowAnalysis(mds.ExpressionBody);
+            }
+
+            if (node is PropertyDeclarationSyntax pds)
+            {
+                throw new Exception("Must analyze data flow of property getters and setters separately");
+            }
+            
+            return null;
         }
     }
 }

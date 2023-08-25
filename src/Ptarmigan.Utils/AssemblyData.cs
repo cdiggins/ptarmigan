@@ -22,10 +22,14 @@ namespace Ptarmigan.Utils
         public string FullName { get; }
         public string ImageRuntimeVersion { get; }
         public bool IsFullyTrusted { get; }
-        public string Location { get; }
+        public FilePath Location { get; }
         public string Architecture { get; }
         public Version Version { get; }
         public string ShortName { get; }
         public string CodeBase { get; }
+        public DirectoryPath LocationDir => Location.GetDirectory();
+
+        public static AssemblyData Current => 
+            new AssemblyData(Assembly.GetExecutingAssembly());
     }
 }

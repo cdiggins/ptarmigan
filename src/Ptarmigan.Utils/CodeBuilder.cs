@@ -1,33 +1,113 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Ptarmigan.Utils
 {
-    public class CodeBuilder
+    public class CodeBuilder<T> where T : CodeBuilder<T>
     {
-        private int indentCount;
-        private StringBuilder sb = new StringBuilder();
+        public StringBuilder sb { get; } = new StringBuilder();
+        public bool AtNewLine { get; private set; }
+        public int IndentLevel { get; private set; }
 
-        public CodeBuilder AppendLine(string line = "")
+        public T Indent()
         {
-            var openBraces = line.Count(c => c == '{');
-            var closeBraces = line.Count(c => c == '}');
+            IndentLevel++;
+            return this as T;
+        }
 
-            // Sometimes we have {} on the same line
-            if (openBraces == closeBraces)
+        public T Dedent()
+        {
+            IndentLevel--;
+            return this as T;
+        }
+
+        public string Indentation()
+        {
+            return new string(' ', IndentLevel * 4);
+        }
+
+        public T Write(char c)
+        {
+            return Write(c.ToString());
+        }
+
+        public T Write(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return this as T;
+            if (AtNewLine)
             {
-                openBraces = 0;
-                closeBraces = 0;
+                sb.Append(Indentation());
+                AtNewLine = false;
             }
+            sb.Append(s);
+            return this as T;
+        }
 
-            indentCount -= closeBraces;
-            sb.Append(new string(' ', indentCount * 4));
-            sb.AppendLine(line);
-            indentCount += openBraces;
-            return this;
+        public T WriteLine()
+        {
+            AtNewLine = true;
+            sb.AppendLine();
+            return this as T;
+        }
+
+        public T WriteLine(string s)
+        {
+            return Write(s).WriteLine();
+        }
+
+        public T Parenthesize(Func<T, T> f)
+        {
+            return f(Write("(") as T).Write(")");
+        }
+
+        public T WriteCommaList<TElement>(IEnumerable<TElement> elements, Func<T, TElement, T> fElement)
+        {
+            return WriteList(elements, fElement, w => w.Write(", "));
+        }
+
+        public T WriteList<TElement>(IEnumerable<TElement> elements, Func<T, TElement, T> fElement, Func<T, T> fSeparator = null)
+        {
+            var first = true;
+            var r = this as T;
+            foreach (var element in elements)
+            {
+                if (!first)
+                {
+                    r = fSeparator?.Invoke(r) ?? r;
+                }
+                else
+                {
+                    first = false;
+                }
+
+                r = fElement(r, element);
+            }
+            return r;
+        }
+
+        public T Brace(Func<T, T> f)
+        {
+            return f(Write("{").Indent().WriteLine()).Dedent().WriteLine("}");
+        }
+
+        public T WriteIf(bool condition, Func<T, T> f)
+        {
+            return condition ? f(this as T) : this as T;
         }
 
         public override string ToString()
-            => sb.ToString();
+        {
+            return sb.ToString();
+        }
+
+        public T Space()
+        {
+            return Write(" ");
+        }
     }
+
+    public class CodeBuilder : CodeBuilder<CodeBuilder>
+    { }
 }

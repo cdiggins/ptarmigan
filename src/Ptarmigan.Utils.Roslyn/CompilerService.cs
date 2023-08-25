@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 
 namespace Ptarmigan.Utils.Roslyn
@@ -21,7 +19,7 @@ namespace Ptarmigan.Utils.Roslyn
         public CancellationTokenSource TokenSource = new CancellationTokenSource();
 
         public static string AssemblyDirectory
-            = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            = AssemblyData.Current.LocationDir;
 
         public void Log(string s)
             => Logger?.Log(s);

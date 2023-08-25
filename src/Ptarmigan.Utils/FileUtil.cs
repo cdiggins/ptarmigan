@@ -560,6 +560,21 @@ namespace Ptarmigan.Utils
             => Directory.EnumerateFiles(directoryPath, searchPattern,
                 recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Select(f => (FilePath)f);
 
+        public static bool Exists(this FilePath filePath)
+            => filePath.Info().Exists;
 
+        public static FileInfo Info(this FilePath filePath)
+            => new FileInfo(filePath);
+
+        public static void CopyToStreamAndClose(this FilePath filePath, Stream outputStream)
+        {
+            if (filePath.Exists())
+            {
+                using (var inputStream = File.OpenRead(filePath))
+                {
+                    inputStream.CopyTo(outputStream);
+                }
+            }
+        }
     }
 }

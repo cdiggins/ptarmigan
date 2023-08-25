@@ -9,30 +9,53 @@ namespace Ptarmigan.Utils
 {
     public class WebServer
     {
-        public Action<string, IDictionary<string, string>, Stream> Callback;
-        private HttpListener listener;
-        private Thread listenerThread;
+        public delegate void CallBackDelegate(
+            string verb, 
+            string path, 
+            IDictionary<string, string> parameters, 
+            Stream inputStream,
+            Stream outputStream);
 
-        public void Start(Action<string, IDictionary<string, string>, Stream> callback, string uri = "http://localhost:8080/")
+        private CallBackDelegate _callback;
+        private HttpListener _listener;
+        private Thread _listenerThread;
+
+        public string Uri { get; }
+
+        public WebServer(CallBackDelegate callback, string uri = "http://localhost:8081/")
         {
-            Callback = callback;
-            listener = new HttpListener();
-            listener.Prefixes.Add(uri);
-            listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
-            listener.Start();
-            listenerThread = new Thread(StartListener);
-            listenerThread.Start();
+            Uri = uri;
+            _callback = callback;
+            _listener = new HttpListener();
+            _listener.Prefixes.Add(uri);
+            _listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
+            _listener.Start();
+            _listenerThread = new Thread(StartListener);
+        }
+
+        public void Start()
+        {
+            _listenerThread.Start();
             Debug.WriteLine("Server Started");
         }
 
+        public bool Active
+            => _listenerThread.IsAlive;
+
         public void Stop()
-            => listenerThread.Abort();
+            => _listenerThread.Abort();
+
+        public void SleepWhileActive()
+        {
+            while (Active)
+                Thread.Sleep(100);
+        }
 
         private void StartListener()
         {
             while (true)
             {
-                var result = listener.BeginGetContext(ListenerCallback, listener);
+                var result = _listener.BeginGetContext(ListenerCallback, _listener);
                 result.AsyncWaitHandle.WaitOne();
             }
             // ReSharper disable once FunctionNeverReturns
@@ -40,16 +63,20 @@ namespace Ptarmigan.Utils
 
         public void ProcessQuery(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var r = new Dictionary<string, string>();
+            var parameters = new Dictionary<string, string>();
             foreach (string key in request.QueryString.Keys)
-                r.Add(key, request.QueryString[key]);
-            Callback?.Invoke(request.Url.LocalPath.Substring(1), r, response.OutputStream);
+                parameters.Add(key, request.QueryString[key]);
+            var path = request.Url.LocalPath.Substring(1);
+            path = path.TrimStart('/');
+            if (path.EndsWith(".js"))
+                response.ContentType = "text/javascript";
+            _callback?.Invoke(request.HttpMethod, path
+                , parameters, request.InputStream, response.OutputStream);
         }
 
         private void ListenerCallback(IAsyncResult result)
         {
-            var context = listener.EndGetContext(result);
-            Debug.WriteLine("Method: " + context.Request.HttpMethod);
+            var context = _listener.EndGetContext(result);
             ProcessQuery(context.Request, context.Response);
             context.Response.Close();
         }

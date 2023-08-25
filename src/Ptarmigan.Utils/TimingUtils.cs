@@ -5,7 +5,6 @@ namespace Ptarmigan.Utils
 {
     public static class TimingUtils
     {
-
         public static void TimeIt(this Action action, string label = "")
             => TimeIt<bool>(action.ToFunction(), label);
 
@@ -17,7 +16,7 @@ namespace Ptarmigan.Utils
         }
 
         public static string PrettyPrintTimeElapsed(this Stopwatch sw)
-            => $"{sw.Elapsed.Minutes}:{sw.Elapsed.Seconds}.{sw.Elapsed.Milliseconds}";
+            => $"{Math.Floor(sw.Elapsed.TotalMinutes)}:{sw.Elapsed.Seconds}.{sw.Elapsed.Milliseconds}";
 
         public static void OutputTimeElapsed(this Stopwatch sw, string label)
             => Console.WriteLine($"{label}: time elapsed {sw.PrettyPrintTimeElapsed()}");
@@ -32,7 +31,6 @@ namespace Ptarmigan.Utils
             sw.OutputTimeElapsed(label);
             return r;
         }
-
 
         public static DateTime JanFirst1970 = new DateTime(1970, 1, 1);
 
