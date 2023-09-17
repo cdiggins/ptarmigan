@@ -22,9 +22,6 @@ namespace Ptarmigan.Utils.Roslyn
         public static string ToPackageReference(this AssemblyIdentity asm)
             => $"<PackageReference Include=\"{asm.Name}\" Version=\"{asm.Version}\" />";
 
-        public static void Log(string s)
-            => Console.WriteLine($"[{DateTime.Now}] {s}");        
-
         public static Compilation UpdateInputFiles(this Compilation self, IEnumerable<string> inputFiles = null, CancellationToken token = default)
             => self.UpdateInputFiles((inputFiles ?? Array.Empty<string>()).Select(f => ScriptFile.Create(f, self.Options.ParseOptions, token)));
 
@@ -66,6 +63,7 @@ namespace Ptarmigan.Utils.Roslyn
             using (var peStream = File.OpenWrite(outputPath))
             using (var pdbStream = File.OpenWrite(pdbPath))
             {
+                // TODO: if the embedded debug information is good enough, leave it. 
                 //var emitOptions = new EmitOptions(false, DebugInformationFormat.Pdb, pdbPath);
                 var emitOptions = new EmitOptions(false, DebugInformationFormat.Embedded);
                 var embeddedTexts = self.InputFileLookup.Values.Select(f => f.EmbeddedText);

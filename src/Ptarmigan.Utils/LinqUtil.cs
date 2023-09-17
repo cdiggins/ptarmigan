@@ -180,5 +180,23 @@ namespace Ptarmigan.Utils
         /// </summary>
         public static Dictionary<T, int> CountGroups<T>(this IEnumerable<T> self)
             => self.GroupBy(x => x).ToDictionary(g => g.Key, g => g.Count());
+
+        /// <summary>
+        /// Groups items using the key selector.
+        /// TODO: add DictionaryOfLists (or its this a MultiDictionary_
+        /// </summary>
+        public static Dictionary<TKey, List<TValue>> ToDictionaryOfLists<T, TKey, TValue>
+            (this IEnumerable<T> self, Func<T, TKey> keySelector, Func<T, TValue> valueSelector)
+        {
+            var groups = self.GroupBy(keySelector);
+            return groups.ToDictionary(g => g.Key, g => g.Select(valueSelector).ToList());
+        }
+
+        /// <summary>
+        /// Groups items using the key selector.
+        /// </summary>
+        public static Dictionary<TKey, List<T>> ToDictionaryOfLists<T, TKey>
+            (this IEnumerable<T> self, Func<T, TKey> keySelector)
+            => self.ToDictionaryOfLists(keySelector, x => x);
     }
 }

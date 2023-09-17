@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Ptarmigan.Utils
 {
-    public enum LogCategory
+    public enum LogLevel
     {
         Debug = 0,
         Info = 1,
@@ -15,47 +15,42 @@ namespace Ptarmigan.Utils
 
     public interface ILogger
     {
-        ILogger Log(int category, string message, params object[] args);
-    }
-
-    public class DebugLogger : ILogger
-    {
-        public ILogger Log(int category, string message, params object[] args)
-        {
-            Debug.WriteLine(message, args);
-            return this;
-        }
+        ILogger Log(LogLevel level, string message);
+        ILogWriter Writer { get; }
+        string Category { get; }
     }
 
     public static class LoggerExtensions
     {
-        public static ILogger Log(this ILogger logger, LogCategory category, string message, params object[] args)
-            => logger.Log((int)category, message, args);
+        public static ILogger Log(this ILogger logger, string message)
+            => logger.Log(LogLevel.Info, message);
 
-        public static ILogger Log(this ILogger logger, string message, params object[] args)
-            => logger.Log(LogCategory.Info, message, args);
+        public static ILogger LogWarning(this ILogger logger, string message)
+            => logger.Log(LogLevel.Warning, message);
 
-        public static ILogger LogWarning(this ILogger logger, string message, params object[] args)
-            => logger.Log(LogCategory.Warning, message, args);
+        public static ILogger LogDebug(this ILogger logger, string message)
+            => logger.Log(LogLevel.Debug, message);
 
-        public static ILogger LogDebug(this ILogger logger, string message, params object[] args)
-#if DEBUG
-            => logger.Log(LogCategory.Debug, message, args);
-#else
-            => logger;
-#endif
-
-        public static ILogger LogError(this ILogger logger, string message, Exception e, params object[] args)
-            => logger.Log(LogCategory.Error, $"ERROR {e.Message} " + message, args);
+        public static ILogger LogError(this ILogger logger, string message, Exception e)
+            => logger.Log(LogLevel.Error, $"{e.Message} {message}");
         
-        public static ILogger LogError(this ILogger logger, Exception e, params object[] args)
-            => logger.LogError("", e, args);
+        public static ILogger LogError(this ILogger logger, Exception e)
+            => logger.LogError("", e);
+
+        public static ILogger LogError(this ILogger logger, string message)
+            => logger.Log(LogLevel.Error, message);
 
         public static Disposer LogDuration(this ILogger logger, string message)
         {
-            logger.Log(LogCategory.Profiling, "STARTED: " + message);
+            logger.Log(LogLevel.Profiling, "STARTED: " + message);
             var sw = Stopwatch.StartNew();
-            return new Disposer(() => logger.Log(LogCategory.Profiling, $"COMPLETED in {sw.ElapsedMilliseconds} msec"));
+            return new Disposer(() => logger.Log(LogLevel.Profiling, $"COMPLETED in {sw.ElapsedMilliseconds} msec"));
         }
+
+        public static Logger SetWriter(this ILogger logger, ILogWriter writer = null)
+            => new Logger(writer, logger.Category);
+
+        public static Logger Create(this ILogger logger, string category, ILogWriter writer = null)
+            => new Logger(writer ?? logger?.Writer, category);
     }
 }

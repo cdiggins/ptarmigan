@@ -49,5 +49,8 @@ namespace Ptarmigan.Utils
             action();
             return sw.ElapsedMilliseconds;
         }
+
+        public static string ToFixedWidthTimeStamp(this TimeSpan elapsed)
+            => $"{(Math.Floor(elapsed.TotalMinutes))}:{elapsed.Seconds:00}.{elapsed.Milliseconds:000}";
     }
 }

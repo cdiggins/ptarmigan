@@ -28,7 +28,7 @@ namespace Ptarmigan.Utils.Roslyn
         
         public CompilerService(ILogger logger, string dir, IEnumerable<string> inputDlls)
         {
-            Logger = logger ?? new DebugLogger();
+            Logger = logger.Create("CompilerService");
             Compilation = Compilation.UpdateReferences(inputDlls);
             Watcher = new DirectoryWatcher(dir, "*.cs", false, OnChange, null);
         }
