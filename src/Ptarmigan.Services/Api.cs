@@ -48,10 +48,12 @@ namespace Ptarmigan.Services
             EventBus.Publish(new RepositoryRegisteredEvent<T>(repository));
         }
 
-        public ILogger Log(int category, string message, params object[] args)
+        public ILogger Log(LogLevel level, string message)
         {
-            this.GetService<LoggingService>()?.Log(category, message, args);
+            this.GetService<LoggingService>()?.Log(level, message);
             return this;
         }
+        
+        public string Category => this.GetService<LoggingService>().Category;
     }
 }

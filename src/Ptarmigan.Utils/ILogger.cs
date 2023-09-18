@@ -16,7 +16,6 @@ namespace Ptarmigan.Utils
     public interface ILogger
     {
         ILogger Log(LogLevel level, string message);
-        ILogWriter Writer { get; }
         string Category { get; }
     }
 
@@ -49,8 +48,8 @@ namespace Ptarmigan.Utils
 
         public static Logger SetWriter(this ILogger logger, ILogWriter writer = null)
             => new Logger(writer, logger.Category);
-
+        
         public static Logger Create(this ILogger logger, string category, ILogWriter writer = null)
-            => new Logger(writer ?? logger?.Writer, category);
+            => new Logger(writer ?? new LogWriter(), category);
     }
 }

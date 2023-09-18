@@ -29,11 +29,14 @@ namespace Ptarmigan.Services
             : base(api)
             => Repo = repo;
 
-        public ILogger Log(int category, string message = "", params object[] args)
+        public ILogger Log(LogLevel level, string message = "")
         {
-            Repo.Add(Guid.NewGuid(), new LogEntry(message, category, DateTime.Now));
+            Repo.Add(Guid.NewGuid(), new LogEntry(message, (int)level, DateTime.Now));
             Debug.WriteLine(Stopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.ff") + " - " + message);
             return this;
         }
+
+        // TODO: maybe multiple logging services can exist, each with their own repo
+        public string Category => "LoggingService";
     }
 }

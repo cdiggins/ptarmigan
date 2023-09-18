@@ -9,12 +9,6 @@ namespace Ptarmigan.Services
 {
     public static class DomoExtensions
     {
-        public static IEnumerable<T> GetValues<T>(this IRepository<T> repo)
-            => repo.GetModels().Select(m => m.Value);
-
-        public static IEnumerable<object> GetValues(this IRepository repo)
-            => repo.GetModels().Select(m => m.Value);
-
         public static JsonText ToJson(this IRepository repo)
             => JsonConvert.SerializeObject(repo.GetValues().ToArray(), Formatting.Indented);
 
