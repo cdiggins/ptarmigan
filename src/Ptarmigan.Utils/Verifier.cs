@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Ptarmigan.Utils
@@ -19,6 +20,18 @@ namespace Ptarmigan.Utils
             [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0)
         {
             Assert(condition, () => message, memberName, fileName, lineNumber);
+        }
+
+        public static void AssertAll<T>(IEnumerable<T> collection, Func<T, bool> condition, string message, [CallerMemberName] string memberName = "",
+            [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            var i = 0;
+            foreach (var x in collection)
+            {
+                Assert(condition(x), $"Element {i} ({x}) failed assertion: {message}", memberName, fileName,
+                    lineNumber);
+                i++;
+            }
         }
 
         public static void AssertEquals(object value, object expected, [CallerMemberName] string memberName = "",

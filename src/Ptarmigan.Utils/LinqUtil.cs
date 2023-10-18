@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Ptarmigan.Utils
@@ -198,5 +199,19 @@ namespace Ptarmigan.Utils
         public static Dictionary<TKey, List<T>> ToDictionaryOfLists<T, TKey>
             (this IEnumerable<T> self, Func<T, TKey> keySelector)
             => self.ToDictionaryOfLists(keySelector, x => x);
+
+        public static TB MinWhere<TA, TB>(this IEnumerable<TA> self,
+            Func<TA, TB> selector, Func<TB, bool> filter, TB defaultValue)
+        {
+            var tmp = self.Select(selector).Where(filter).ToList();
+            return tmp.Count == 0 ? defaultValue : tmp.Min();
+        }
+
+        public static TB MaxWhere<TA, TB>(this IEnumerable<TA> self,
+            Func<TA, TB> selector, Func<TB, bool> filter, TB defaultValue)
+        {
+            var tmp = self.Select(selector).Where(filter).ToList();
+            return tmp.Count == 0 ? defaultValue : tmp.Max();
+        }
     }
 }
